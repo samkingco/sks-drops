@@ -1,0 +1,42 @@
+{
+  "name": "@sks-drops/app",
+  "private": true,
+  "engines": {
+    "node": "16",
+    "pnpm": "7"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "dev:graph": "next dev & graphql-codegen --config codegen.ts --watch",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "codegen": "graphql-codegen --config codegen.ts"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@sks-drops/contracts": "workspace:*",
+    "@sks-drops/snapshots": "workspace:*",
+    "@sks-drops/tokens": "workspace:*",
+    "@tanstack/react-query": "^4.12.0",
+    "connectkit": "^0.0.2",
+    "ethers": "^5.7.1",
+    "graphql": "^16.6.0",
+    "graphql-request": "^5.0.0",
+    "next": "^12.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-markdown": "^8.0.3",
+    "react-query": "^3.39.2",
+    "wagmi": "^0.7.3"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.13.7",
+    "@graphql-codegen/client-preset": "^1.0.7",
+    "@graphql-typed-document-node/core": "^3.1.1",
+    "@types/node": "^18.11.0",
+    "@types/react": "^18.0.21",
+    "typescript": "^4.8.4"
+  }
+}

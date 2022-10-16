@@ -1,0 +1,21 @@
+[profile.default]
+src = 'packages/contracts/src'
+test = 'packages/contracts/test'
+out = 'packages/contracts/out'
+script = 'packages/contracts/script'
+broadcast = 'packages/contracts/broadcast'
+cache_path = 'packages/contracts/cache'
+libs = ['packages/contracts/lib']
+verbosity = 2
+bytecode_hash = 'none'
+solc_version = '0.8.17'
+extra_output_files = ['abi']
+fs_permissions = [{ access = "read-write", path = "./"}]
+
+[rpc_endpoints]
+mainnet = "${MAINNET_RPC_URL}"
+goerli = "${GOERLI_RPC_URL}"
+
+[etherscan]
+mainnet = { key = "${ETHERSCAN_KEY}" }
+goerli = { key = "${ETHERSCAN_KEY}" }

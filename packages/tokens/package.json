@@ -1,0 +1,9 @@
+{
+  "name": "@sks-drops/tokens",
+  "private": true,
+  "engines": {
+    "node": "16",
+    "pnpm": "7"
+  },
+  "scripts": {}
+}

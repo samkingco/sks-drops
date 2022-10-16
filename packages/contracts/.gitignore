@@ -1,0 +1,8 @@
+cache
+
+# Ignore build output
+out/**/*.json
+
+.env
+.env.*
+!.env.sample

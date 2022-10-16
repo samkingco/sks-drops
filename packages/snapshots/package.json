@@ -1,0 +1,15 @@
+{
+  "name": "@sks-drops/snapshots",
+  "private": true,
+  "engines": {
+    "node": "16",
+    "pnpm": "7"
+  },
+  "scripts": {
+    "snapshot": "ts-node index.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.0",
+    "ts-node": "^10.9.1"
+  }
+}

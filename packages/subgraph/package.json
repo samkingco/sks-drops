@@ -1,0 +1,21 @@
+{
+  "name": "@sks-drops/subgraph",
+  "private": true,
+  "engines": {
+    "node": "16",
+    "pnpm": "7"
+  },
+  "scripts": {
+    "codegen": "graph codegen subgraph*.yaml",
+    "build": "pnpm codegen && graph build subgraph*.yaml",
+    "deploy:goerli": "graph deploy --node https://api.thegraph.com/deploy/ samkingco/example-nft subgraph-goerli.yaml",
+    "prettier": "prettier --write src",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.35.0"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-ts": "0.28.1"
+  }
+}

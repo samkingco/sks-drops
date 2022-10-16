@@ -1,0 +1,16 @@
+type Settings @entity {
+  id: ID!
+  price: BigInt!
+}
+
+type Token @entity {
+  id: ID!
+  owner: Wallet
+  tokenURI: String!
+}
+
+type Wallet @entity {
+  id: ID!
+  address: Bytes!
+  tokens: [Token!]! @derivedFrom(field: "owner")
+}

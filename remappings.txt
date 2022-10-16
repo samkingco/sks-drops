@@ -1,0 +1,4 @@
+ds-test/=packages/contracts/lib/ds-test/src/
+forge-std/=packages/contracts/lib/forge-std/src/
+openzeppelin/=packages/contracts/lib/openzeppelin-contracts/contracts/
+solmate/=packages/contracts/lib/solmate/src/
