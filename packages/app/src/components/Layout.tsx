@@ -20,12 +20,11 @@ const Header = styled.header`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 2em;
-  align-items: baseline;
   margin-bottom: 3em;
 
   @media (min-width: 32rem) {
     grid-template-columns: 1fr max-content;
-    align-items: baseline;
+    align-items: center;
   }
 `;
 
