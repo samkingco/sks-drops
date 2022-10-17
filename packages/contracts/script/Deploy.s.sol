@@ -23,7 +23,7 @@ contract Deploy is Script {
             0xAa6BF8F3A77F9A71A778204E3f4049a416DbB72a // signer.samkingstudio.eth
         );
 
-        drops.setDropURI(1, "ipfs://QmXSQQYww8BRLiD9obXwfZTa3pP7uJWcgE8o7YnzLDcNde");
+        drops.setDropURI(1, "ipfs://QmdE5abTxLaTrSWpHU5kweh4ArxCGt1QmtzYBd8jK5B9Gv");
         drops.drop(1, dropTo);
 
         string memory deployJson = string.concat(
