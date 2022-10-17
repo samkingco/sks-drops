@@ -1,16 +1,6 @@
 import styled from "@emotion/styled";
-import Link from "next/link";
+import { Layout } from "../components/Layout";
 import { Body, Mono, Title } from "../components/Typography";
-
-const Wrapper = styled.div`
-  padding: 2rem;
-  max-width: 48em;
-  margin: 0 auto;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
 
 const List = styled.ul`
   margin-top: 0;
@@ -38,14 +28,7 @@ const List = styled.ul`
 
 export default function License() {
   return (
-    <Wrapper>
-      <Link href="/">
-        <a>
-          <Mono as="span" subdued>
-            &larr; Drops
-          </Mono>
-        </a>
-      </Link>
+    <Layout>
       <Title margin="24 0 0">License</Title>
       <Body>
         Token metadata and images licensed as{" "}
@@ -93,6 +76,6 @@ export default function License() {
           </Body>
         </li>
       </List>
-    </Wrapper>
+    </Layout>
   );
 }
