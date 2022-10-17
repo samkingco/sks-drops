@@ -1,0 +1,35 @@
+{
+  "transactions": [
+    {
+      "hash": "0x73c5833ad93737509f4be205a1c7987d44b316163a2c1be6d6a7006408436766",
+      "transactionType": "CALL",
+      "contractName": "Drops",
+      "contractAddress": "0x208D1008fA508414B6DC63738Bc8560A12Ef5279",
+      "function": "drop(uint256,address[])",
+      "arguments": [
+        "1",
+        "[0x469EB9C0990C68Baf0BFf3bDFB0e8aa1724695cD]"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0xd633d5bc9fd1250ac203de798508340dfa989b6b",
+        "to": "0x208d1008fa508414b6dc63738bc8560a12ef5279",
+        "gas": "0x17466",
+        "value": "0x0",
+        "data": "0x9f390a36000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000469eb9c0990c68baf0bff3bdfb0e8aa1724695cd",
+        "nonce": "0x17",
+        "accessList": []
+      },
+      "additionalContracts": []
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0x73c5833ad93737509f4be205a1c7987d44b316163a2c1be6d6a7006408436766"
+  ],
+  "path": "/Users/sam/Code/sks-drops/packages/contracts/broadcast/Drop.s.sol/1/run-latest.json",
+  "returns": {},
+  "timestamp": 1666016745,
+  "commit": "202ad1d"
+}
