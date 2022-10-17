@@ -13,7 +13,8 @@ export const subdued = css`
 
 export const titleStyles = css`
   font-family: var(--font-heading);
-  font-weight: normal;
+  font-weight: bold;
+  font-style: italic;
   font-size: 3.2rem;
 `;
 
@@ -25,7 +26,8 @@ export const Title = styled.h1<BaseTextProps>`
 
 export const headingStyles = css`
   font-family: var(--font-heading);
-  font-weight: normal;
+  font-weight: bold;
+  font-style: italic;
   font-size: 2.4rem;
 `;
 
@@ -37,7 +39,8 @@ export const Heading = styled.h2<BaseTextProps>`
 
 export const subheadingStyles = css`
   font-family: var(--font-heading);
-  font-weight: normal;
+  font-weight: bold;
+  font-style: italic;
   font-size: 1.6rem;
 `;
 
