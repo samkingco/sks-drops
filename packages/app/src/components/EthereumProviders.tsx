@@ -1,14 +1,10 @@
-import { ConnectKitProvider } from "connectkit";
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import {
   configureChains,
   createClient,
   defaultChains,
   WagmiConfig,
 } from "wagmi";
-import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { targetChainId } from "../utils/contracts";
@@ -30,31 +26,14 @@ export const { chains, provider, webSocketProvider } = configureChains(
   ]
 );
 
+const { connectors } = getDefaultWallets({
+  appName,
+  chains,
+});
+
 export const client = createClient({
   autoConnect: true,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    new CoinbaseWalletConnector({
-      chains,
-      options: {
-        appName,
-        headlessMode: true,
-      },
-    }),
-    new InjectedConnector({
-      chains,
-      options: {
-        name: "Injected",
-        shimDisconnect: true,
-      },
-    }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        qrcode: false,
-      },
-    }),
-  ],
+  connectors,
   provider,
   webSocketProvider,
 });
@@ -66,7 +45,7 @@ interface Props {
 export function EthereumProviders({ children }: Props) {
   return (
     <WagmiConfig client={client}>
-      <ConnectKitProvider>{children}</ConnectKitProvider>
+      <RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
     </WagmiConfig>
   );
 }

@@ -1,4 +1,5 @@
 import { Global } from "@emotion/react";
+import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 import Script from "next/script";

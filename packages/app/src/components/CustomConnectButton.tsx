@@ -1,4 +1,4 @@
-import { ConnectKitButton } from "connectkit";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useENS } from "../hooks/useENS";
 import { Button } from "./Button";
@@ -14,14 +14,53 @@ export function CustomConnectButton({
   const { displayName } = useENS(connectedAddress);
 
   return (
-    <ConnectKitButton.Custom>
-      {({ isConnected, show }) => {
-        return (
-          <Button onClick={show}>
-            {isConnected ? displayName : notConnectedText}
-          </Button>
-        );
-      }}
-    </ConnectKitButton.Custom>
+    <>
+      <ConnectButton.Custom>
+        {({
+          account,
+          chain,
+          openAccountModal,
+          openChainModal,
+          openConnectModal,
+          mounted,
+        }) => {
+          const connected = mounted && account && chain;
+
+          return (
+            <>
+              {(() => {
+                if (!connected) {
+                  return (
+                    <Button onClick={openConnectModal}>
+                      {notConnectedText}
+                    </Button>
+                  );
+                }
+
+                if (chain.unsupported) {
+                  return (
+                    <Button onClick={openChainModal}>Wrong network</Button>
+                  );
+                }
+
+                return (
+                  <Button onClick={openAccountModal}>{displayName}</Button>
+                );
+              })()}
+            </>
+          );
+        }}
+      </ConnectButton.Custom>
+
+      {/* <ConnectKitButton.Custom>
+        {({ isConnected, show }) => {
+          return (
+            <Button onClick={show}>
+              {isConnected ? displayName : notConnectedText}
+            </Button>
+          );
+        }}
+      </ConnectKitButton.Custom> */}
+    </>
   );
 }

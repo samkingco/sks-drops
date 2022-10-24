@@ -16,6 +16,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@rainbow-me/rainbowkit": "^0.7.3",
     "@sks-drops/contracts": "workspace:*",
     "@sks-drops/snapshots": "workspace:*",
     "@sks-drops/tokens": "workspace:*",
