@@ -129,8 +129,6 @@ export function ClaimButton({ id, startsAt, endsAt }: Props) {
 
   const canClaim = Boolean(connectedAddress && signature && write && !error);
 
-  console.log({ id, canClaim, connectedAddress, signature, write, error });
-
   return (
     <>
       {!connectedAddress ? (
