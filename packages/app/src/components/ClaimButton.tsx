@@ -29,9 +29,11 @@ const TxMessage = styled(Mono)`
 
 interface Props {
   id: number;
+  startsAt?: number;
+  endsAt?: number;
 }
 
-export function ClaimButton({ id }: Props) {
+export function ClaimButton({ id, startsAt, endsAt }: Props) {
   const isMounted = useIsMounted();
   const { address: connectedAddress } = useAccount();
 
@@ -55,11 +57,17 @@ export function ClaimButton({ id }: Props) {
   let errorMessage;
   if (signatureError && signatureError instanceof ResponseError) {
     switch (signatureError.code) {
+      case "ALREADY_OWNED":
+        errorMessage = "You already own this drop";
+        break;
       case "NOT_AVAILABLE_FOR_ADDRESS":
         errorMessage = "Sadly your wallet is not in the snapshot for this drop";
         break;
-      case "ALREADY_OWNED":
-        errorMessage = "You already own this drop";
+      case "NOT_AVAILABLE_YET":
+        errorMessage = "Cannot claim yet";
+        break;
+      case "NOT_AVAILABLE_ANYMORE":
+        errorMessage = "Drop is no longer available";
         break;
       default:
         errorMessage = "Unable to claim this drop";
@@ -74,7 +82,7 @@ export function ClaimButton({ id }: Props) {
   const { config, error } = usePrepareContractWrite({
     ...drops,
     functionName: "claimDrop",
-    args: [BigNumber.from(1), BigNumber.from(1), signature || "0x"],
+    args: [BigNumber.from(id), BigNumber.from(1), signature || "0x"],
     enabled: Boolean(signature),
   });
 
@@ -101,61 +109,81 @@ export function ClaimButton({ id }: Props) {
 
   if (!isMounted) return null;
 
+  const now = Date.now();
+
+  if (startsAt && now < startsAt * 1000) {
+    return (
+      <TxArea>
+        <TxMessage subdued>Cannot claim yet</TxMessage>
+      </TxArea>
+    );
+  }
+
+  if (endsAt && now > endsAt * 1000) {
+    return (
+      <TxArea>
+        <TxMessage subdued>Drop is no longer available</TxMessage>
+      </TxArea>
+    );
+  }
+
   const canClaim = Boolean(connectedAddress && signature && write && !error);
+
+  console.log({ id, canClaim, connectedAddress, signature, write, error });
 
   return (
     <>
-      {!connectedAddress && (
+      {!connectedAddress ? (
         <CustomConnectButton notConnectedText="Connect to claim" />
-      )}
+      ) : (
+        <TxArea>
+          {isLoadingSignature && (
+            <Button onClick={() => {}} isLoading>
+              Generating signature
+            </Button>
+          )}
 
-      <TxArea>
-        {connectedAddress && isLoadingSignature && (
-          <Button onClick={() => {}} isLoading>
-            Generating signature
-          </Button>
-        )}
+          {canClaim && !isLoadingSignature && (
+            <Button
+              onClick={() => write?.()}
+              disabled={!canClaim || isSuccess}
+              isLoading={isWaitingOnWallet || isWaitingOnTx}
+            >
+              {!isSuccess ? "Claim this drop" : "Claimed"}
+            </Button>
+          )}
 
-        {canClaim && !isLoadingSignature && (
-          <Button
-            onClick={() => write?.()}
-            disabled={!canClaim || isSuccess}
-            isLoading={isWaitingOnWallet || isWaitingOnTx}
-          >
-            {!isSuccess ? "Claim this drop" : "Claimed"}
-          </Button>
-        )}
+          {isWaitingOnWallet && (
+            <TxMessage subdued>Confirm in your wallet</TxMessage>
+          )}
 
-        {isWaitingOnWallet && (
-          <TxMessage subdued>Confirm in your wallet</TxMessage>
-        )}
+          {isWaitingOnTx && (
+            <TxMessage subdued>
+              <span>
+                Transaction sending…{" "}
+                {transactionLink && (
+                  <>
+                    <a href={transactionLink}>View on explorer</a> &rarr;
+                  </>
+                )}
+              </span>
+            </TxMessage>
+          )}
 
-        {isWaitingOnTx && (
-          <TxMessage subdued>
-            <span>
-              Transaction sending…{" "}
+          {isSuccess && (
+            <TxMessage subdued>
+              Transaction sent successfully!{" "}
               {transactionLink && (
                 <>
                   <a href={transactionLink}>View on explorer</a> &rarr;
                 </>
               )}
-            </span>
-          </TxMessage>
-        )}
+            </TxMessage>
+          )}
 
-        {isSuccess && (
-          <TxMessage subdued>
-            Transaction sent successfully!{" "}
-            {transactionLink && (
-              <>
-                <a href={transactionLink}>View on explorer</a> &rarr;
-              </>
-            )}
-          </TxMessage>
-        )}
-
-        {errorMessage && <TxMessage subdued>{errorMessage}</TxMessage>}
-      </TxArea>
+          {errorMessage && <TxMessage subdued>{errorMessage}</TxMessage>}
+        </TxArea>
+      )}
     </>
   );
 }

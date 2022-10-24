@@ -10,12 +10,12 @@ interface Props {
 export default function SocialMeta({
   title = "Drops from Sam King Studio",
   description = "NFT drops from Sam King Studio to collectors and friends. Thank you for your support.",
-  socialImage = "og-image.png",
+  socialImage = "/og-image.png",
 }: Props) {
   const router = useRouter();
   const baseUrl = "https://drops.samking.studio";
   const url = `${baseUrl}/${router.asPath}`;
-  const ogImage = `${baseUrl}/${socialImage}`;
+  const ogImage = `${baseUrl}${socialImage}`;
 
   return (
     <Head>

@@ -1,6 +1,11 @@
 export class ResponseError extends Error {
   status?: number;
-  code?: "NO_ADDRESS" | "NOT_AVAILABLE_FOR_ADDRESS" | "ALREADY_OWNED";
+  code?:
+    | "NO_ADDRESS"
+    | "NOT_AVAILABLE_FOR_ADDRESS"
+    | "NOT_AVAILABLE_YET"
+    | "NOT_AVAILABLE_ANYMORE"
+    | "ALREADY_OWNED";
 }
 
 export async function fetchGetJSON(url: string) {

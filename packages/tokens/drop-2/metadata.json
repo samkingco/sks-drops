@@ -1,0 +1,11 @@
+{
+  "name": "Guard Dogs",
+  "description": "A guard dog watches as I pass. Pulled from the Archives, and taken on one of my evening walks around Hackney back when I used to live there.\n\nFree to claim from the 24th-31st of October, 2022.",
+  "image": "ipfs://QmdWuiNBKgVuFAYC3Y33k53E7s8CqK3jGccen1zJtPbNrC",
+  "attributes": [
+    { "trait_type": "Artist", "value": "Sam King" },
+    { "trait_type": "Resolution", "value": "5600x5600px" },
+    { "trait_type": "Drop ID", "value": "2" },
+    { "trait_type": "Drop date", "value": "2022/10/24 to 2022/10/31" }
+  ]
+}

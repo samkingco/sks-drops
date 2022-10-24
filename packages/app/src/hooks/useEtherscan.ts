@@ -1,10 +1,10 @@
 import { useCallback } from "react";
-import { etherscanBlockExplorers, useNetwork } from "wagmi";
+import { etherscanBlockExplorers } from "wagmi";
+import { targetChainId } from "../utils/contracts";
 
 export function useEtherscan() {
-  const { chain } = useNetwork();
   let explorerURL = etherscanBlockExplorers.mainnet.url;
-  if (chain?.id === 5) {
+  if (targetChainId === 5) {
     explorerURL = etherscanBlockExplorers.goerli.url;
   }
 

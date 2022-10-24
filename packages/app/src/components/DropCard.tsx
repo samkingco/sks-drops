@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
+import { useOpenSea } from "../hooks/useOpenSea";
 import { drops } from "../utils/contracts";
+import { Drop } from "../utils/drops";
 import { ClaimButton } from "./ClaimButton";
 import { Markdown } from "./Markdown";
 import { Heading, Mono } from "./Typography";
@@ -15,28 +17,26 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 2em;
+  margin-bottom: 4em;
 `;
 
-interface Attribute {
-  trait_type: string;
-  value: any;
-}
-
-interface Props {
-  id: number;
-  name: string;
-  description: string;
-  attributes?: Attribute[];
-}
-
-export function DropCard({ id, name, description, attributes }: Props) {
+export function DropCard({
+  id,
+  name,
+  description,
+  attributes,
+  startsAt,
+  endsAt,
+}: Drop) {
   const dropDate =
     attributes && attributes.find((i) => i.trait_type == "Drop date")?.value;
+
+  const { getAssetUrl } = useOpenSea();
 
   return (
     <Wrapper>
       <ImageWrapper>
-        <a href={`https://opensea.io/assets/ethereum/${drops.address}/${id}`}>
+        <a href={getAssetUrl(drops.address, id.toString())}>
           <Image src={`/drop-${id}-web.jpg`} width={2048} height={2048} />
         </a>
       </ImageWrapper>
@@ -50,7 +50,7 @@ export function DropCard({ id, name, description, attributes }: Props) {
         <Markdown>{description}</Markdown>
       </div>
 
-      <ClaimButton id={id} />
+      <ClaimButton id={id} startsAt={startsAt} endsAt={endsAt} />
     </Wrapper>
   );
 }
