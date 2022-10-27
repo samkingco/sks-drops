@@ -1,63 +1,75 @@
-import { ConnectKitProvider } from "connectkit";
+import { ConnectKitProvider, getDefaultClient } from "connectkit";
 import {
   configureChains,
   createClient,
   defaultChains,
   WagmiConfig,
 } from "wagmi";
-import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { targetChainId } from "../utils/contracts";
 
 // TODO: Replace with the project name, will show when connecting a wallet
-const appName = "SK web3";
-
-// Filter chains to target chain ID
-const targetChains = defaultChains.filter((c) => c.id === targetChainId);
+const appName = "Drops from Sam King Studio";
 
 // Get the alchemy API key to set up a provider
-const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 
-export const { chains, provider, webSocketProvider } = configureChains(
-  targetChains,
+export const { chains, provider } = configureChains(
+  defaultChains.filter((c) => c.id === targetChainId),
   [
-    ...(alchemyApiKey ? [alchemyProvider({ apiKey: alchemyApiKey })] : []),
+    ...(alchemyId ? [alchemyProvider({ apiKey: alchemyId })] : []),
     publicProvider(),
   ]
 );
 
-export const client = createClient({
-  autoConnect: true,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    new CoinbaseWalletConnector({
-      chains,
-      options: {
-        appName,
-        headlessMode: true,
-      },
-    }),
-    new InjectedConnector({
-      chains,
-      options: {
-        name: "Injected",
-        shimDisconnect: true,
-      },
-    }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        qrcode: false,
-      },
-    }),
-  ],
-  provider,
-  webSocketProvider,
-});
+const client = createClient(
+  getDefaultClient({
+    appName,
+    alchemyId,
+    chains: defaultChains.filter((c) => c.id === targetChainId),
+  })
+);
+
+// export const client = createClient({
+//   autoConnect: true,
+//   connectors: [
+//     new MetaMaskConnector({
+//       chains,
+//       options: {
+//         shimDisconnect: true,
+//         shimChainChangedDisconnect: false,
+//         UNSTABLE_shimOnConnectSelectAccount: true,
+//       },
+//     }),
+//     new InjectedConnector({
+//       chains,
+//       options: {
+//         shimDisconnect: true,
+//         name: (detectedName) =>
+//           `Injected (${
+//             typeof detectedName === "string"
+//               ? detectedName
+//               : detectedName.join(", ")
+//           })`,
+//       },
+//     }),
+//     new WalletConnectConnector({
+//       chains,
+//       options: {
+//         qrcode: false,
+//       },
+//     }),
+//     new CoinbaseWalletConnector({
+//       chains,
+//       options: {
+//         appName,
+//         headlessMode: true,
+//       },
+//     }),
+//   ],
+//   provider,
+// });
 
 interface Props {
   children: React.ReactNode;
