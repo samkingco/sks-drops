@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
+import Link from "next/link";
 import { useOpenSea } from "../hooks/useOpenSea";
 import { drops } from "../utils/contracts";
 import { Drop } from "../utils/drops";
@@ -30,7 +31,6 @@ export function DropCard({
 }: Drop) {
   const dropDate =
     attributes && attributes.find((i) => i.trait_type == "Drop date")?.value;
-
   const { getAssetUrl } = useOpenSea();
 
   return (
@@ -46,7 +46,11 @@ export function DropCard({
           Drop #{id}
           {dropDate ? ` — ${dropDate}` : null}
         </Mono>
-        <Heading>{name}</Heading>
+        <Heading>
+          <Link href={`/drops/${id}`}>
+            <a>{name}</a>
+          </Link>
+        </Heading>
         <Markdown>{description}</Markdown>
       </div>
 

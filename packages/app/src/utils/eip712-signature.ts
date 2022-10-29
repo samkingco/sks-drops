@@ -58,5 +58,5 @@ export async function createSignature(
   // Generate the signature from the typed data using ethers.js
   const signature = await signer._signTypedData(domain, types, data);
 
-  return signature;
+  return signature as `0x${string}`;
 }

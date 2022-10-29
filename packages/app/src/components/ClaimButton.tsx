@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { useQuery } from "@tanstack/react-query";
 import { BigNumber } from "ethers";
 import {
   useAccount,
@@ -10,7 +9,7 @@ import {
 import { useEtherscan } from "../hooks/useEtherscan";
 import { useIsMounted } from "../hooks/useIsMounted";
 import { drops } from "../utils/contracts";
-import { fetchPostJSON, ResponseError } from "../utils/fetch";
+import { trpc } from "../utils/trpc";
 import { Button } from "./Button";
 import { CustomConnectButton } from "./CustomConnectButton";
 import { Mono } from "./Typography";
@@ -37,65 +36,36 @@ export function ClaimButton({ id, startsAt, endsAt }: Props) {
   const isMounted = useIsMounted();
   const { address: connectedAddress } = useAccount();
 
+  // Get the signature to see if it can be claimed
   const {
-    data: signatureRes,
+    data: signature,
     isLoading: isLoadingSignature,
     error: signatureError,
-  } = useQuery(
-    ["signature", connectedAddress, id],
-    async () => {
-      return await fetchPostJSON(`/api/signature/drop-${id}`, {
-        address: connectedAddress,
-      });
-    },
+  } = trpc.getSignatureForDrop.useQuery(
     {
-      retry: false,
-      enabled: Boolean(connectedAddress),
-    }
+      dropId: id,
+      address: connectedAddress,
+    },
+    { retry: false, enabled: Boolean(connectedAddress) }
   );
 
-  let errorMessage;
-  if (signatureError && signatureError instanceof ResponseError) {
-    switch (signatureError.code) {
-      case "ALREADY_OWNED":
-        errorMessage = "You already own this drop";
-        break;
-      case "NOT_AVAILABLE_FOR_ADDRESS":
-        errorMessage = "Sadly your wallet is not in the snapshot for this drop";
-        break;
-      case "NOT_AVAILABLE_YET":
-        errorMessage = "Cannot claim yet";
-        break;
-      case "NOT_AVAILABLE_ANYMORE":
-        errorMessage = "Drop is no longer available";
-        break;
-      default:
-        errorMessage = "Unable to claim this drop";
-        break;
-    }
-  }
-
-  const signature: `0x${string}` | undefined =
-    signatureRes && signatureRes.signature;
+  // Get any error messages
+  const errorMessage = signatureError && signatureError.message;
 
   // Prepare the mint transaction
-  const { config, error } = usePrepareContractWrite({
+  const prepare = usePrepareContractWrite({
     ...drops,
     functionName: "claimDrop",
     args: [BigNumber.from(id), BigNumber.from(1), signature || "0x"],
     enabled: Boolean(signature),
   });
 
-  if (error) {
-    console.error(error);
-  }
-
   // Send the transaction
   const {
     write,
     data: txData,
     isLoading: isWaitingOnWallet,
-  } = useContractWrite(config);
+  } = useContractWrite(prepare.config);
 
   // Watch the for the transaction receipt
   const { isLoading: isWaitingOnTx, isSuccess } = useWaitForTransaction({
@@ -127,7 +97,7 @@ export function ClaimButton({ id, startsAt, endsAt }: Props) {
     );
   }
 
-  const canClaim = Boolean(connectedAddress && signature && write && !error);
+  const canClaim = Boolean(connectedAddress && signature);
 
   return (
     <>
@@ -144,7 +114,7 @@ export function ClaimButton({ id, startsAt, endsAt }: Props) {
           {canClaim && !isLoadingSignature && (
             <Button
               onClick={() => write?.()}
-              disabled={!canClaim || isSuccess}
+              disabled={Boolean(!write || prepare.error || isSuccess)}
               isLoading={isWaitingOnWallet || isWaitingOnTx}
             >
               {!isSuccess ? "Claim this drop" : "Claimed"}

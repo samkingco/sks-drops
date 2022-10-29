@@ -28,3 +28,5 @@ export const DROP_2 = {
 } as const;
 
 export const allDrops: Drop[] = [DROP_1, DROP_2];
+export const allDropsOrdered = allDrops.sort((a, b) => b.id - a.id);
+export const allDropIds = allDrops.map((i) => i.id);
