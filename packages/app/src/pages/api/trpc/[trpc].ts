@@ -2,8 +2,10 @@ import addresses from "@sks-drops/snapshots/drops/1/addresses.json";
 import { initTRPC, TRPCError } from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
 import { BigNumber } from "ethers";
+import { GraphQLClient } from "graphql-request";
 import { z } from "zod";
 import { allDropIds, DROP_1, DROP_2 } from "../../../utils/drops";
+import { graphql } from "../../../graphql";
 import { contract, createSignature } from "../../../utils/eip712-signature";
 
 const t = initTRPC.create();
@@ -18,6 +20,23 @@ const errorMessages: Record<string, string> = {
   ALREADY_OWNED: "You already own this drop",
   FALLBACK: "Unable to claim this drop",
 } as const;
+
+const graphQlClient = new GraphQLClient(
+  "https://api.thegraph.com/subgraphs/name/samkingco/ice64"
+);
+
+const ownershipQueryDocument = graphql(/* GraphQL */ `
+  query Ownership {
+    wallets {
+      address
+      editionsCount
+      originalsCount
+      roots {
+        id
+      }
+    }
+  }
+`);
 
 const appRouter = t.router({
   getSignatureForDrop: t.procedure
