@@ -4,8 +4,8 @@ import * as trpcNext from "@trpc/server/adapters/next";
 import { BigNumber } from "ethers";
 import { GraphQLClient } from "graphql-request";
 import { z } from "zod";
-import { allDropIds, DROP_1, DROP_2 } from "../../../utils/drops";
 import { graphql } from "../../../graphql";
+import { allDropIds, DROP_1, DROP_2, DROP_3 } from "../../../utils/drops";
 import { contract, createSignature } from "../../../utils/eip712-signature";
 
 const t = initTRPC.create();
@@ -15,6 +15,7 @@ const errorMessages: Record<string, string> = {
   NO_ADDRESS: "Please supply a wallet address",
   NOT_AVAILABLE_FOR_ADDRESS:
     "Sadly your wallet is not in the snapshot for this drop",
+  NOT_STUDIO_PROJECT_HOLDER: "Only available to holders of Roots and ICE64",
   NOT_AVAILABLE_YET: "Cannot claim yet",
   NOT_AVAILABLE_ANYMORE: "Drop is no longer available",
   ALREADY_OWNED: "You already own this drop",
@@ -67,14 +68,30 @@ const appRouter = t.router({
         input.dropId
       );
 
+      if (!balance.eq(0)) {
+        throw new TRPCError({
+          code: "PRECONDITION_FAILED",
+          message: errorMessages.ALREADY_OWNED,
+        });
+      }
+
+      const previousProjectOwnership = await graphQlClient.request(
+        ownershipQueryDocument
+      );
+
+      const currentHolders: string[] = [];
+      for (const wallet of previousProjectOwnership.wallets) {
+        if (
+          wallet.editionsCount > 0 ||
+          wallet.originalsCount > 0 ||
+          wallet.roots.length > 0
+        ) {
+          currentHolders.push(wallet.address);
+        }
+      }
+
       switch (input.dropId) {
         case DROP_1.id:
-          if (!balance.eq(0)) {
-            throw new TRPCError({
-              code: "PRECONDITION_FAILED",
-              message: errorMessages.ALREADY_OWNED,
-            });
-          }
           if (
             !addresses
               .map((i) => i.toLowerCase())
@@ -86,12 +103,6 @@ const appRouter = t.router({
             });
           }
         case DROP_2.id:
-          if (!balance.eq(0)) {
-            throw new TRPCError({
-              code: "PRECONDITION_FAILED",
-              message: errorMessages.ALREADY_OWNED,
-            });
-          }
           const now = Date.now();
           if (now < DROP_2.startsAt * 1000) {
             throw new TRPCError({
@@ -103,6 +114,13 @@ const appRouter = t.router({
             throw new TRPCError({
               code: "PRECONDITION_FAILED",
               message: errorMessages.NOT_AVAILABLE_ANYMORE,
+            });
+          }
+        case DROP_3.id:
+          if (!currentHolders.includes(input.address.toLowerCase())) {
+            throw new TRPCError({
+              code: "PRECONDITION_FAILED",
+              message: errorMessages.NOT_STUDIO_PROJECT_HOLDER,
             });
           }
         default:
