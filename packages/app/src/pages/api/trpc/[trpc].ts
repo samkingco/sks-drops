@@ -23,16 +23,20 @@ const errorMessages: Record<string, string> = {
 } as const;
 
 const graphQlClient = new GraphQLClient(
-  "https://api.thegraph.com/subgraphs/name/samkingco/ice64"
+  "https://api.thegraph.com/subgraphs/name/samkingco/sks"
 );
 
 const ownershipQueryDocument = graphql(/* GraphQL */ `
   query Ownership {
     wallets {
       address
-      editionsCount
-      originalsCount
       roots {
+        id
+      }
+      ice64Originals {
+        id
+      }
+      ice64Editions {
         id
       }
     }
@@ -82,9 +86,9 @@ const appRouter = t.router({
       const currentHolders: string[] = [];
       for (const wallet of previousProjectOwnership.wallets) {
         if (
-          wallet.editionsCount > 0 ||
-          wallet.originalsCount > 0 ||
-          wallet.roots.length > 0
+          wallet.roots.length > 0 ||
+          wallet.ice64Originals.length > 0 ||
+          wallet.ice64Editions.length > 0
         ) {
           currentHolders.push(wallet.address);
         }
