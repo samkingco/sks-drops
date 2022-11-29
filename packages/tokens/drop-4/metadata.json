@@ -1,0 +1,11 @@
+{
+  "name": "Pampas Grass",
+  "description": "Acts as a barrier between the urban landscape and the sea.\n\nOriginally posted to my [photo journal](https://samking.photo/journal/8). Taken in November 2022 with a Fujifilm GFX50S II.\n\nFree to claim.",
+  "image": "ipfs://QmVBcAQ2kCFUj69nuAryQgs3KsyxuFn9HaZtjyikDWSQkV",
+  "attributes": [
+    { "trait_type": "Artist", "value": "Sam King" },
+    { "trait_type": "Resolution", "value": "5408x6760px" },
+    { "trait_type": "Drop ID", "value": "4" },
+    { "trait_type": "Drop date", "value": "2022/11/30" }
+  ]
+}

@@ -28,6 +28,8 @@ export function DropCard({
   attributes,
   startsAt,
   endsAt,
+  webImageWidth,
+  webImageHeight,
 }: Drop) {
   const dropDate =
     attributes && attributes.find((i) => i.trait_type == "Drop date")?.value;
@@ -37,7 +39,11 @@ export function DropCard({
     <Wrapper>
       <ImageWrapper>
         <a href={getAssetUrl(drops.address, id.toString())}>
-          <Image src={`/drop-${id}-web.jpg`} width={2048} height={2048} />
+          <Image
+            src={`/drop-${id}-web.jpg`}
+            width={webImageWidth}
+            height={webImageHeight}
+          />
         </a>
       </ImageWrapper>
 

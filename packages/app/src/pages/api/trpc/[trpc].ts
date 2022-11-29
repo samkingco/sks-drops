@@ -79,18 +79,22 @@ const appRouter = t.router({
         });
       }
 
-      const previousProjectOwnership = await graphQlClient.request(
-        ownershipQueryDocument
-      );
-
+      const requiresCurrentHolder = [DROP_3].some((i) => i.id === input.dropId);
       const currentHolders: string[] = [];
-      for (const wallet of previousProjectOwnership.wallets) {
-        if (
-          wallet.roots.length > 0 ||
-          wallet.ice64Originals.length > 0 ||
-          wallet.ice64Editions.length > 0
-        ) {
-          currentHolders.push(wallet.address);
+
+      if (requiresCurrentHolder) {
+        const previousProjectOwnership = await graphQlClient.request(
+          ownershipQueryDocument
+        );
+
+        for (const wallet of previousProjectOwnership.wallets) {
+          if (
+            wallet.roots.length > 0 ||
+            wallet.ice64Originals.length > 0 ||
+            wallet.ice64Editions.length > 0
+          ) {
+            currentHolders.push(wallet.address);
+          }
         }
       }
 
