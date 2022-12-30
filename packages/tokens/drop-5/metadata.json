@@ -1,0 +1,11 @@
+{
+  "name": "The Pines",
+  "description": "This is one of my favourite places, it's so calm and peaceful. It really quiets a racing mind, and the smell of fresh pine is intoxicating. An outtake from a new project I'm working on. Taken in December 2022 with a Fujifilm GFX50S II.\n\nFree to claim from the 30th of December 2022 to the 6th of January 2023.",
+  "image": "ipfs://QmRXujKNaeHGwbAeeu5VNJDYUpVCQctoSq1yZ2rFdgQRWm",
+  "attributes": [
+    { "trait_type": "Artist", "value": "Sam King" },
+    { "trait_type": "Resolution", "value": "6192x6192px" },
+    { "trait_type": "Drop ID", "value": "5" },
+    { "trait_type": "Drop date", "value": "2022/12/30 to 2023/01/06" }
+  ]
+}

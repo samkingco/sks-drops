@@ -5,7 +5,13 @@ import { BigNumber } from "ethers";
 import { GraphQLClient } from "graphql-request";
 import { z } from "zod";
 import { graphql } from "../../../graphql";
-import { allDropIds, DROP_1, DROP_2, DROP_3 } from "../../../utils/drops";
+import {
+  allDropIds,
+  DROP_1,
+  DROP_2,
+  DROP_3,
+  DROP_5,
+} from "../../../utils/drops";
 import { contract, createSignature } from "../../../utils/eip712-signature";
 
 const t = initTRPC.create();
@@ -98,6 +104,8 @@ const appRouter = t.router({
         }
       }
 
+      const now = Date.now();
+
       switch (input.dropId) {
         case DROP_1.id:
           if (
@@ -111,7 +119,6 @@ const appRouter = t.router({
             });
           }
         case DROP_2.id:
-          const now = Date.now();
           if (now < DROP_2.startsAt * 1000) {
             throw new TRPCError({
               code: "PRECONDITION_FAILED",
@@ -129,6 +136,19 @@ const appRouter = t.router({
             throw new TRPCError({
               code: "PRECONDITION_FAILED",
               message: errorMessages.NOT_STUDIO_PROJECT_HOLDER,
+            });
+          }
+        case DROP_5.id:
+          if (now < DROP_5.startsAt * 1000) {
+            throw new TRPCError({
+              code: "PRECONDITION_FAILED",
+              message: errorMessages.NOT_AVAILABLE_YET,
+            });
+          }
+          if (now > DROP_5.endsAt * 1000) {
+            throw new TRPCError({
+              code: "PRECONDITION_FAILED",
+              message: errorMessages.NOT_AVAILABLE_ANYMORE,
             });
           }
         default:

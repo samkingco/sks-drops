@@ -14,7 +14,7 @@ export default function SocialMeta({
 }: Props) {
   const router = useRouter();
   const baseUrl = "https://drops.samking.studio";
-  const url = `${baseUrl}/${router.asPath}`;
+  const url = `${baseUrl}${router.asPath}`;
   const ogImage = `${baseUrl}${socialImage}`;
 
   return (
