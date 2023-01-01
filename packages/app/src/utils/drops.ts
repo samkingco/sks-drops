@@ -59,7 +59,7 @@ export const DROP_4 = {
 export const DROP_5 = {
   id: 5,
   startsAt: 1672358400, // 30/12/2022
-  endsAt: 1672531200, // 07/01/2023
+  endsAt: 1673049600, // 07/01/2023
   ...dropFiveMetadata,
   ...webImageSquare,
 } as const;
