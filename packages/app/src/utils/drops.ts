@@ -3,6 +3,7 @@ import dropTwoMetadata from "@sks-drops/tokens/drop-2/metadata.json";
 import dropThreeMetadata from "@sks-drops/tokens/drop-3/metadata.json";
 import dropFourMetadata from "@sks-drops/tokens/drop-4/metadata.json";
 import dropFiveMetadata from "@sks-drops/tokens/drop-5/metadata.json";
+import dropSixMetadata from "@sks-drops/tokens/drop-6/metadata.json";
 
 interface Attribute {
   trait_type: string;
@@ -64,6 +65,19 @@ export const DROP_5 = {
   ...webImageSquare,
 } as const;
 
-export const allDrops: Drop[] = [DROP_1, DROP_2, DROP_3, DROP_4, DROP_5];
+export const DROP_6 = {
+  id: 6,
+  ...dropSixMetadata,
+  ...webImageSquare,
+} as const;
+
+export const allDrops: Drop[] = [
+  DROP_1,
+  DROP_2,
+  DROP_3,
+  DROP_4,
+  DROP_5,
+  DROP_6,
+];
 export const allDropsOrdered = allDrops.sort((a, b) => b.id - a.id);
 export const allDropIds = allDrops.map((i) => i.id);

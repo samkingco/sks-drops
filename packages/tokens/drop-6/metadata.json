@@ -1,0 +1,11 @@
+{
+  "name": "Hackney on Delta 400",
+  "description": "A film test contact sheet from when I lived in Hackney, pulled from the Archives. \n\nFree to claim for all.",
+  "image": "ipfs://QmP5tbecK3Uc6hNTi2frBHo9L32yhReYCPVLHv4ojfJqaw",
+  "attributes": [
+    { "trait_type": "Artist", "value": "Sam King" },
+    { "trait_type": "Resolution", "value": "3684x3684px" },
+    { "trait_type": "Drop ID", "value": "6" },
+    { "trait_type": "Drop date", "value": "2022/12/30 to 2023/02/27" }
+  ]
+}
